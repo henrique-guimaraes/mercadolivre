@@ -1,40 +1,34 @@
 package mercadolivre.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import mercadolivre.sequences.BottomDiagonalsSequences;
-import mercadolivre.sequences.HorizontalSequences;
-import mercadolivre.sequences.SimianCommand;
-import mercadolivre.sequences.UpDiagonalsSequences;
-import mercadolivre.sequences.VerticalSequences;
-
 public class SimianUtils {
 
-	public static List<String> SimioSequences() {
-		List<String> sequenciasValidas = new ArrayList<>();
-		sequenciasValidas.add("AAAA");
-		sequenciasValidas.add("TTTT");
-		sequenciasValidas.add("GGGG");
-		sequenciasValidas.add("CCCC");
-		
-		return sequenciasValidas;
+	public static StringBuilder appendHorizontal(StringBuilder valueSb, String[] matrix, int x, int i) {
+		return valueSb.append(matrix[i].substring(x, x + 1));
 	}
-	
-	public static List<SimianCommand> getCommands() {
-		List<SimianCommand> commands = new ArrayList<>();
-		commands.add(new HorizontalSequences());
-		commands.add(new VerticalSequences());
-		commands.add(new UpDiagonalsSequences());
-		commands.add(new BottomDiagonalsSequences());
-		
-		return commands;
+
+	public static StringBuilder appendVertical(StringBuilder valueSb, String[] matrix, int x, int i) {
+		return valueSb.append(Character.toString(matrix[x].charAt(i)));
 	}
-	
-	public static synchronized void updateSequencies(String n) {
-		SimianTimes.setVezes(SimianTimes.getVezes() + SimianUtils.SimioSequences()
-		 													  .parallelStream()
-		 													  .filter(sequencia -> n.contains(sequencia))
-		 													  .count());
-	}	
+
+	public static StringBuilder appendDiagonalCimaEsquerda(StringBuilder valueSb, String[] matrix, int x, int i,
+			int z) {
+		return valueSb.append(matrix[x - i].substring(z, z + 1));
+	}
+
+	public static StringBuilder appendDiagonalCimaDireita(StringBuilder valueSb, String[] matrix, int x, int i, int z) {
+		return valueSb.append(matrix[x - i].substring(matrix.length - z - 1, matrix.length - z));
+	}
+
+	public static StringBuilder appendDiagonalBaixoEsquerda(StringBuilder valueSb, String[] matrix, int x, int a) {
+		return valueSb.append(matrix[a - 1].substring(x, x + 1));
+	}
+
+	public static StringBuilder appendDiagonalBaixoDireita(StringBuilder valueSb, String[] matrix, int x, int z,
+			int a) {
+		return valueSb.append(matrix[a - 1].substring(matrix.length - z - 1, matrix.length - z));
+	}
+
+	public static boolean simianDetected() {
+		return SimianDnaSequences.getSimianDnaBasesAmount() > 1;
+	}
 }
